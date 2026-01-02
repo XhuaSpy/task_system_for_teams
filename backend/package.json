@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/src/app.js",
+    "build": "npx tsc -p tsconfig.json",
+    "build:watch": "npx tsc -p tsconfig.json --watch",
+    "dev:run": "node --watch dist/src/app.js",
+    "dev:watch": "node --run build:watch & node --run dev:run",
+    "test": "node --run build & node --test ./dist/test/**/*.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1"
+  }
+}
