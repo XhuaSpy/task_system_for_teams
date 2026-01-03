@@ -1,4 +1,5 @@
 /postgres/
 **/node_modules/**
 **drawio.bkp
+**drawio.dtmp
 **/dist/
