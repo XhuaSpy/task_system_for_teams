@@ -25,7 +25,7 @@ export const assignmentsTableRelations = relations(assignmentsTable, ({ one }) =
     references: [membersTable.idMember],
   }),
   tasksTable: one(tasksTable, {
-    fields: [assignmentsTable.idMember],
+    fields: [assignmentsTable.idTask],
     references: [tasksTable.idTask],
   }),
 }));

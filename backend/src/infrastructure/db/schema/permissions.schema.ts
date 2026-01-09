@@ -5,7 +5,7 @@ import { permitTable } from "./permit.schema.ts";
 export const permissionsTable = pgTable("permissions", {
   codePermission: serial("code_permission").primaryKey(),
   name: varchar({ length: 50 }).notNull(),
-  descScope: text("desc_scope"),
+  descScope: text("desc_scope").notNull(),
 });
 
 export const PermissionInsert = typeof permissionsTable.$inferInsert;

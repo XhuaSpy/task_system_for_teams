@@ -41,7 +41,7 @@ export const taskGroupsTableRelations = relations(taskGroupsTable, ({ one, many 
     references: [usersTable.idUser],
   }),
   teamsTable: one(teamsTable, {
-    fields: [taskGroupsTable.idOwnerUser],
+    fields: [taskGroupsTable.idOwnerTeam],
     references: [teamsTable.idTeam],
   }),
 }));

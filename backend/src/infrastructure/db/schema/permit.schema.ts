@@ -29,7 +29,7 @@ export const permitTableRelations = relations(permitTable, ({ one }) => ({
     references: [rolesTable.codeRole],
   }),
   permissionsTable: one(permissionsTable, {
-    fields: [permitTable.codeRole],
+    fields: [permitTable.codePermission],
     references: [permissionsTable.codePermission],
   }),
 }));

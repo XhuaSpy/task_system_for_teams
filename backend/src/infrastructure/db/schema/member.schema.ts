@@ -3,6 +3,7 @@ import { usersTable } from "./user.schema.ts";
 import { teamsTable } from "./team.schema.ts";
 import { rolesTable } from "./role.schema.ts";
 import { relations } from "drizzle-orm";
+import { assignmentsTable } from "./assignments.schema.ts";
 
 export const membersTable = pgTable("members", {
   idMember: uuid("id_member").defaultRandom().primaryKey(),
@@ -22,7 +23,8 @@ export const membersTable = pgTable("members", {
 export type MemberInsert = typeof membersTable.$inferInsert;
 export type MemberSelect = typeof membersTable.$inferSelect;
 
-export const membersTableRelations = relations(membersTable, ({ one }) => ({
+export const membersTableRelations = relations(membersTable, ({ one, many }) => ({
+  assignmentsTable: many(assignmentsTable),
   usersTable: one(usersTable, {
     fields: [membersTable.idUser],
     references: [usersTable.idUser],

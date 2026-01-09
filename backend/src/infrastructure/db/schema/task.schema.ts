@@ -38,7 +38,7 @@ export type TaskTableSelect = typeof tasksTable.$inferSelect;
 export const tasksTableRelations = relations(tasksTable, ({ one, many }) => ({
   assignmentsTable: many(assignmentsTable),
   taskGroupsTable: one(taskGroupsTable, {
-    fields: [tasksTable.idTask],
+    fields: [tasksTable.idGroup],
     references: [taskGroupsTable.idGroup],
   }),
 }));
