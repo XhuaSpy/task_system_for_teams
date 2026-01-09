@@ -6,4 +6,5 @@ export const {
     DB_USER = 'postgres',
     DB_PASSWORD = 123456,
     DB_NAME = 'todo_note_api',
+    DATABASE_URL,
 } = process.env;

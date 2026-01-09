@@ -1,0 +1,688 @@
+{
+  "id": "04618bd4-3668-44b8-b6be-6a1fd754a387",
+  "prevId": "ff65186e-c9c0-48b1-a5a5-cb46e82405ae",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id_user": {
+          "name": "id_user",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "username": {
+          "name": "username",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hashed_password": {
+          "name": "hashed_password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.teams": {
+      "name": "teams",
+      "schema": "",
+      "columns": {
+        "id_team": {
+          "name": "id_team",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.roles": {
+      "name": "roles",
+      "schema": "",
+      "columns": {
+        "code_role": {
+          "name": "code_role",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "roles_name_unique": {
+          "name": "roles_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.permissions": {
+      "name": "permissions",
+      "schema": "",
+      "columns": {
+        "code_permission": {
+          "name": "code_permission",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "desc_scope": {
+          "name": "desc_scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.permit": {
+      "name": "permit",
+      "schema": "",
+      "columns": {
+        "codeRole": {
+          "name": "codeRole",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codePermission": {
+          "name": "codePermission",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "permit_codeRole_index": {
+          "name": "permit_codeRole_index",
+          "columns": [
+            {
+              "expression": "codeRole",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "permit_codePermission_index": {
+          "name": "permit_codePermission_index",
+          "columns": [
+            {
+              "expression": "codePermission",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "permit_codeRole_roles_code_role_fk": {
+          "name": "permit_codeRole_roles_code_role_fk",
+          "tableFrom": "permit",
+          "tableTo": "roles",
+          "columnsFrom": [
+            "codeRole"
+          ],
+          "columnsTo": [
+            "code_role"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "permit_codePermission_permissions_code_permission_fk": {
+          "name": "permit_codePermission_permissions_code_permission_fk",
+          "tableFrom": "permit",
+          "tableTo": "permissions",
+          "columnsFrom": [
+            "codePermission"
+          ],
+          "columnsTo": [
+            "code_permission"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "permit_codeRole_codePermission_pk": {
+          "name": "permit_codeRole_codePermission_pk",
+          "columns": [
+            "codeRole",
+            "codePermission"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.members": {
+      "name": "members",
+      "schema": "",
+      "columns": {
+        "id_member": {
+          "name": "id_member",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "id_user": {
+          "name": "id_user",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id_team": {
+          "name": "id_team",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code_role": {
+          "name": "code_role",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "members_id_user_users_id_user_fk": {
+          "name": "members_id_user_users_id_user_fk",
+          "tableFrom": "members",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id_user"
+          ],
+          "columnsTo": [
+            "id_user"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "members_id_team_teams_id_team_fk": {
+          "name": "members_id_team_teams_id_team_fk",
+          "tableFrom": "members",
+          "tableTo": "teams",
+          "columnsFrom": [
+            "id_team"
+          ],
+          "columnsTo": [
+            "id_team"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "members_code_role_roles_code_role_fk": {
+          "name": "members_code_role_roles_code_role_fk",
+          "tableFrom": "members",
+          "tableTo": "roles",
+          "columnsFrom": [
+            "code_role"
+          ],
+          "columnsTo": [
+            "code_role"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.task_groups": {
+      "name": "task_groups",
+      "schema": "",
+      "columns": {
+        "id_group": {
+          "name": "id_group",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "id_owner_user": {
+          "name": "id_owner_user",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_owner_team": {
+          "name": "id_owner_team",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "task_groups_id_owner_user_users_id_user_fk": {
+          "name": "task_groups_id_owner_user_users_id_user_fk",
+          "tableFrom": "task_groups",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id_owner_user"
+          ],
+          "columnsTo": [
+            "id_user"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "task_groups_id_owner_team_teams_id_team_fk": {
+          "name": "task_groups_id_owner_team_teams_id_team_fk",
+          "tableFrom": "task_groups",
+          "tableTo": "teams",
+          "columnsFrom": [
+            "id_owner_team"
+          ],
+          "columnsTo": [
+            "id_team"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "owner_check": {
+          "name": "owner_check",
+          "value": " \n        (\n          \"task_groups\".\"id_owner_team\" IS NOT NULL \n          and \"task_groups\".\"id_owner_user\" IS NULL \n        ) \n        or \n        (\n          \"task_groups\".\"id_owner_team\" IS NULL\n          and \"task_groups\".\"id_owner_user\" IS NOT NULL \n        )\n      "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.tasks": {
+      "name": "tasks",
+      "schema": "",
+      "columns": {
+        "id_task": {
+          "name": "id_task",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "id_group": {
+          "name": "id_group",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "todo_state": {
+          "name": "todo_state",
+          "type": "states",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'PENDING'"
+        },
+        "creation_date": {
+          "name": "creation_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tasks_id_group_task_groups_id_group_fk": {
+          "name": "tasks_id_group_task_groups_id_group_fk",
+          "tableFrom": "tasks",
+          "tableTo": "task_groups",
+          "columnsFrom": [
+            "id_group"
+          ],
+          "columnsTo": [
+            "id_group"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tasks_id_group_title_unique": {
+          "name": "tasks_id_group_title_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id_group",
+            "title"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.assignments": {
+      "name": "assignments",
+      "schema": "",
+      "columns": {
+        "id_member": {
+          "name": "id_member",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id_task": {
+          "name": "id_task",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "assignments_id_member_members_id_member_fk": {
+          "name": "assignments_id_member_members_id_member_fk",
+          "tableFrom": "assignments",
+          "tableTo": "members",
+          "columnsFrom": [
+            "id_member"
+          ],
+          "columnsTo": [
+            "id_member"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "assignments_id_task_tasks_id_task_fk": {
+          "name": "assignments_id_task_tasks_id_task_fk",
+          "tableFrom": "assignments",
+          "tableTo": "tasks",
+          "columnsFrom": [
+            "id_task"
+          ],
+          "columnsTo": [
+            "id_task"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "assignments_id_member_id_task_pk": {
+          "name": "assignments_id_member_id_task_pk",
+          "columns": [
+            "id_member",
+            "id_task"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.team_membership_requests": {
+      "name": "team_membership_requests",
+      "schema": "",
+      "columns": {
+        "id_menbership": {
+          "name": "id_menbership",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "id_user": {
+          "name": "id_user",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id_team": {
+          "name": "id_team",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "create_by": {
+          "name": "create_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "req_status": {
+          "name": "req_status",
+          "type": "request_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'PENDING'"
+        },
+        "type_request": {
+          "name": "type_request",
+          "type": "request_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_request": {
+          "name": "date_request",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "date_response": {
+          "name": "date_response",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "team_membership_requests_id_user_users_id_user_fk": {
+          "name": "team_membership_requests_id_user_users_id_user_fk",
+          "tableFrom": "team_membership_requests",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id_user"
+          ],
+          "columnsTo": [
+            "id_user"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "team_membership_requests_id_team_teams_id_team_fk": {
+          "name": "team_membership_requests_id_team_teams_id_team_fk",
+          "tableFrom": "team_membership_requests",
+          "tableTo": "teams",
+          "columnsFrom": [
+            "id_team"
+          ],
+          "columnsTo": [
+            "id_team"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "team_membership_requests_create_by_members_id_member_fk": {
+          "name": "team_membership_requests_create_by_members_id_member_fk",
+          "tableFrom": "team_membership_requests",
+          "tableTo": "members",
+          "columnsFrom": [
+            "create_by"
+          ],
+          "columnsTo": [
+            "id_member"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.states": {
+      "name": "states",
+      "schema": "public",
+      "values": [
+        "DONE",
+        "PROGRESS",
+        "PENDING"
+      ]
+    },
+    "public.request_status": {
+      "name": "request_status",
+      "schema": "public",
+      "values": [
+        "PENDING",
+        "ACCEPTED",
+        "REJECTED"
+      ]
+    },
+    "public.request_type": {
+      "name": "request_type",
+      "schema": "public",
+      "values": [
+        "INVITE",
+        "REQUEST"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

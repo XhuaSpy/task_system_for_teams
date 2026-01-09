@@ -5,7 +5,8 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "noEmit": false,
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "esnext",
@@ -39,6 +40,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "include": ["src/", "test/"],
+  "include": ["src/", "test/", "drizzle.config.ts"],
   "exclude": ["dist/"]
 }
