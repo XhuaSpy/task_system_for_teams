@@ -1,25 +1,16 @@
-import { DB } from "../../../../infrastructure/database/db.ts";
-import type { UserSelect } from "../../../../infrastructure/database/schema/user.schema.ts";
-import type { Loan } from "../../../model/lean.model.ts";
+import { DB } from "../../../../infrastructure/db/drizzle.ts";
 import { User } from "../../../model/user.model.ts";
-import type { IUserRepository } from "../../interface/user.irepository.ts";
+import type { IUserRepository } from "../../interfaces/user.irepository.ts";
 
-export class UserRepository implements IUserRepository {
+export class PgUserRepository implements IUserRepository {
   async getById(id: string): Promise<User | null> {
     const user = await DB.query.usersTable.findFirst({
-      where: (userSchema, { eq }) => eq(userSchema.id_user, id),
+      where: (userSchema, { eq }) => eq(userSchema.idUser, id),
     });
 
     if (!user) return null;
 
-    const userReturned = new User(
-      user.id_user,
-      user.hashed_password,
-      user.username,
-      user.email,
-      user.ph_number,
-      user.address
-    );
+    const userReturned = new User(user.idUser, user.hashedPassword, user.username, user.email);
 
     return userReturned;
   }
@@ -34,9 +25,6 @@ export class UserRepository implements IUserRepository {
     throw new Error("Method not implemented.");
   }
   delete(e: string | User): void {
-    throw new Error("Method not implemented.");
-  }
-  getLoan(u: User): Loan {
     throw new Error("Method not implemented.");
   }
 }
