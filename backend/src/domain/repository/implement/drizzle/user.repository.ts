@@ -5,7 +5,7 @@ import type { UserRegister } from "../../../../service/dto/user/user-register.dt
 import { User } from "../../../model/user.model.ts";
 import type { IUserRepository } from "../../interfaces/user.irepository.ts";
 
-export class PgUserRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
   async getById(id: string): Promise<User | undefined> {
     const user = await DB.query.usersTable.findFirst({
       where: (userSchema, { eq }) => eq(userSchema.idUser, id),
@@ -22,13 +22,13 @@ export class PgUserRepository implements IUserRepository {
   }
 
   async save(user: UserRegister): Promise<string | undefined> {
-    const hashedPassword = await User.hashPassword(user.password);
+    const hashPassword = await User.hashPassword(user.password);
 
     const userReturned = await DB.insert(usersTable)
       .values({
         username: user.username,
+        hashedPassword: hashPassword,
         email: user.email,
-        hashedPassword: hashedPassword,
       })
       .returning();
 
