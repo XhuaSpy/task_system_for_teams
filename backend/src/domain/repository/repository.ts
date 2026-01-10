@@ -1,5 +1,5 @@
 export interface Repository<E> {
-  getById(id: string): Promise<E | null>;
+  getById(id: string): Promise<E | undefined>;
   getAll(): Promise<E[]>;
   save(e: E) : void; // -> Devuelve el objeto guardado de la base de datos.
   put(e: E, eM: E) : void; // -> Devuelve el objeto modificao de la base de datos.  
