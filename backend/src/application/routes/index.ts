@@ -1,0 +1,1 @@
+export * as v1MainRouter from './v1/main.route.ts'
