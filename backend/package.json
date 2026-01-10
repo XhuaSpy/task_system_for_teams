@@ -7,9 +7,7 @@
   "scripts": {
     "start": "node dist/src/app.js",
     "build": "npx tsc -p tsconfig.json",
-    "build:watch": "npx tsc -p tsconfig.json --watch",
-    "dev:run": "node --watch dist/src/app.js",
-    "dev:watch": "node --run build:watch & node --run dev:run",
+    "dev": "tsx --watch src/app.ts",
     "test": "node --run build & node --test ./dist/test/**/*.test.ts"
   },
   "keywords": [],
