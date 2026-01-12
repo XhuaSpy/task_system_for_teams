@@ -1,0 +1,1 @@
+ALTER TABLE "permit" ADD CONSTRAINT "permit_codeRole_codePermission_pk" PRIMARY KEY("codeRole","codePermission");
